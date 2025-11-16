@@ -96,15 +96,21 @@ The frontend is built with **Vue 3 Composition API** and **TypeScript**, organiz
    cd Backend
    ```
 
-2. Run the application:
+2. Restore packages
 
    ```bash
-   dotnet run
+   dotnet restore
    ```
 
-3. The API will start on **http://localhost:5123**
+3. Run the application:
 
-4. Access Swagger UI for API documentation:
+   ```bash
+   dotnet run --project TodoApp.Api
+   ```
+
+4. The API will start on **http://localhost:5123**
+
+5. Access Swagger UI for API documentation:
    ```
    http://localhost:5123/swagger
    ```
