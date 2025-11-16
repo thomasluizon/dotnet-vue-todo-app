@@ -53,59 +53,63 @@ function cancelEdit() {
 </script>
 
 <template>
-  <div class="todo-item">
-    <input
-      v-if="!isEditing"
-      type="checkbox"
-      :checked="task.isCompleted"
-      @change="handleToggle"
-      class="todo-checkbox"
-    />
+  <div class="todo-item" :class="{ editing: isEditing }">
+    <div class="todo-main">
+      <input
+        v-if="!isEditing"
+        type="checkbox"
+        :checked="task.isCompleted"
+        @change="handleToggle"
+        class="todo-checkbox"
+      />
 
-    <div v-if="!isEditing" class="todo-content">
-      <h3 class="todo-title" :class="{ completed: task.isCompleted }">
-        {{ task.title }}
-      </h3>
-      <p v-if="task.description" class="todo-description">
-        {{ task.description }}
-      </p>
-    </div>
-
-    <div v-else class="edit-form">
-      <div class="edit-group">
-        <input
-          v-model="editTitle"
-          type="text"
-          placeholder="Task title"
-          class="edit-input"
-        />
+      <div v-if="!isEditing" class="todo-content">
+        <h3 class="todo-title" :class="{ completed: task.isCompleted }">
+          {{ task.title }}
+        </h3>
+        <p v-if="task.description" class="todo-description">
+          {{ task.description }}
+        </p>
       </div>
-      <div class="edit-group">
-        <textarea
-          v-model="editDescription"
-          placeholder="Task description (optional)"
-          rows="2"
-          class="edit-input"
-        />
+
+      <div v-else class="edit-form">
+        <div class="edit-group">
+          <input
+            v-model="editTitle"
+            type="text"
+            placeholder="Task title"
+            class="edit-input"
+          />
+        </div>
+        <div class="edit-group">
+          <textarea
+            v-model="editDescription"
+            placeholder="Task description (optional)"
+            rows="2"
+            class="edit-input"
+          />
+        </div>
       </div>
     </div>
 
-    <div v-if="!isEditing" class="button-group">
-      <button @click="startEdit" class="edit-button">
-        Edit
-      </button>
-      <button @click="handleDelete" class="delete-button">
-        Delete
-      </button>
-    </div>
+    <div class="todo-actions">
+      <div v-if="!isEditing" class="button-group">
+        <button @click="startEdit" class="btn btn-edit">
+          ✏️ Edit
+        </button>
+        <button @click="handleDelete" class="btn btn-delete">
+          🗑️ Delete
+        </button>
+      </div>
 
-    <div v-else class="button-group">
-      <button @click="handleSave" class="save-button">
-        Save
-      </button>
-      <button @click="cancelEdit" class="cancel-button">
-        Cancel
-      </button>
+      <div v-else class="button-group button-group-editing">
+        <button @click="handleSave" class="btn btn-save">
+          ✓ Save
+        </button>
+        <button @click="cancelEdit" class="btn btn-cancel">
+          ✕ Cancel
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -114,19 +118,39 @@ function cancelEdit() {
 .todo-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
-  border: 1px solid #e0e0e0;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #fff;
   border-radius: 8px;
-  background-color: #fff;
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.todo-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.todo-item.editing {
+  background: #f8f9ff;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+}
+
+.todo-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex: 1;
 }
 
 .todo-checkbox {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   cursor: pointer;
   flex-shrink: 0;
+  margin-top: 2px;
+  accent-color: #667eea;
 }
 
 .todo-content {
@@ -134,28 +158,31 @@ function cancelEdit() {
 }
 
 .todo-title {
-  margin: 0;
-  font-size: 18px;
+  margin: 0 0 0.25rem 0;
+  font-size: 17px;
   font-weight: 600;
-  color: #333;
+  color: #2d3748;
+  line-height: 1.4;
 }
 
 .todo-title.completed {
   text-decoration: line-through;
-  color: #999;
+  color: #a0aec0;
+  opacity: 0.7;
 }
 
 .todo-description {
-  margin: 4px 0 0 0;
+  margin: 0;
   font-size: 14px;
-  color: #666;
+  color: #718096;
+  line-height: 1.5;
 }
 
 .edit-form {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.75rem;
 }
 
 .edit-group {
@@ -165,71 +192,105 @@ function cancelEdit() {
 
 .edit-input {
   width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
+  padding: 0.625rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
   font-size: 14px;
   font-family: inherit;
+  transition: all 0.2s ease;
 }
 
 .edit-input:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 textarea.edit-input {
-  resize: vertical;
+  resize: none;
+}
+
+.todo-actions {
+  flex-shrink: 0;
 }
 
 .button-group {
   display: flex;
-  gap: 8px;
-  flex-shrink: 0;
+  gap: 0.5rem;
+  align-items: center;
 }
 
-.edit-button,
-.save-button,
-.cancel-button,
-.delete-button {
-  padding: 8px 16px;
-  color: white;
+.button-group-editing {
+  flex-direction: column;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-.edit-button {
-  background-color: #6c757d;
+.btn-edit {
+  background: #f7fafc;
+  color: #4a5568;
+  border: 1px solid #e2e8f0;
 }
 
-.edit-button:hover {
-  background-color: #5a6268;
+.btn-edit:hover {
+  background: #edf2f7;
+  transform: translateY(-1px);
 }
 
-.save-button {
-  background-color: #28a745;
+.btn-delete {
+  background: #fff5f5;
+  color: #e53e3e;
+  border: 1px solid #feb2b2;
 }
 
-.save-button:hover {
-  background-color: #218838;
+.btn-delete:hover {
+  background: #fed7d7;
+  transform: translateY(-1px);
 }
 
-.cancel-button {
-  background-color: #6c757d;
+.btn-save {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  color: white;
 }
 
-.cancel-button:hover {
-  background-color: #5a6268;
+.btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
 }
 
-.delete-button {
-  background-color: #dc3545;
+.btn-cancel {
+  background: #edf2f7;
+  color: #4a5568;
 }
 
-.delete-button:hover {
-  background-color: #c82333;
+.btn-cancel:hover {
+  background: #e2e8f0;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .todo-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .todo-actions {
+    width: 100%;
+  }
+
+  .button-group {
+    width: 100%;
+    justify-content: flex-end;
+  }
 }
 </style>

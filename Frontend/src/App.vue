@@ -15,15 +15,26 @@ import TodoListView from './views/TodoListView.vue'
   box-sizing: border-box;
 }
 
+html,
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background-color: #f5f5f5;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-attachment: fixed;
   color: #333;
   line-height: 1.6;
+  min-height: 100vh;
 }
 
 #app-container {
-  min-height: 100vh;
-  padding: 20px;
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+@media (max-width: 768px) {
+  #app-container {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+  }
 }
 </style>

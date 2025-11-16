@@ -71,8 +71,9 @@ function handleSaveTask(task: TodoItemType) {
 .header h1 {
   font-size: 32px;
   font-weight: 700;
-  color: #333;
+  color: #fff;
   margin: 0;
+  text-align: center;
 }
 
 .loading,
@@ -80,7 +81,9 @@ function handleSaveTask(task: TodoItemType) {
   text-align: center;
   padding: 40px;
   font-size: 18px;
-  color: #666;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
 }
 
 .todo-list {
