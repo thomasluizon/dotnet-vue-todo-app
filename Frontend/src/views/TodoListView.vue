@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 import { useTodoApi } from '../composables/useTodoApi'
 import TodoForm from '../components/TodoForm.vue'
 import TodoItem from '../components/TodoItem.vue'
+import type { TodoItem as TodoItemType } from '../types/TodoItem'
 
 const { tasks, loading, fetchTasks, createTask, updateTask, deleteTask } = useTodoApi()
 
@@ -14,12 +15,16 @@ function handleSubmitTask(payload: { title: string; description: string }) {
   createTask(payload)
 }
 
-function handleToggleComplete(task: any) {
+function handleToggleComplete(task: TodoItemType) {
   updateTask(task)
 }
 
 function handleDeleteTask(id: number) {
   deleteTask(id)
+}
+
+function handleSaveTask(task: TodoItemType) {
+  updateTask(task)
 }
 </script>
 
@@ -46,6 +51,7 @@ function handleDeleteTask(id: number) {
         :task="task"
         @toggleComplete="handleToggleComplete"
         @deleteTask="handleDeleteTask"
+        @saveTask="handleSaveTask"
       />
     </div>
   </div>
